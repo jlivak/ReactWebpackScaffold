@@ -1,9 +1,7 @@
 var path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InterpolateHtmlPlugin = require('interpolate-html-plugin');
-
-var publicUrl = '';
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     // Change to your "entry-point".
@@ -14,9 +12,8 @@ module.exports = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json']
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
     },
-    devtool: "source-map",
     module: {
         rules: [{
             test: /\.(ts|js|tsx|jsx)$/,
@@ -50,18 +47,14 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             }]
     },
-    devServer: {
-        contentBase: path.resolve(__dirname, 'public'),
-        hot: true
-    },
     plugins: [new ForkTsCheckerWebpackPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './public/templates/index.html'
         }),
-        new InterpolateHtmlPlugin({
-            PUBLIC_URL: publicUrl,
-            // You can pass any key-value pairs, this was just an example.
-            // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
+        new CopyPlugin({
+            patterns: [
+                { from: "public", to: "assets" }
+            ],
         })]
 };
