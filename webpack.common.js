@@ -9,7 +9,7 @@ module.exports = {
     entry: './src/index.tsx',
     output: {
         path: path.resolve(__dirname, 'out'),
-        filename: 'bundle.js'
+        filename: '[name].[contenthash].js'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
@@ -37,15 +37,18 @@ module.exports = {
                         // plugin-proposal-decorators is only needed if you're using experimental decorators in TypeScript
                         ["@babel/plugin-proposal-decorators", { legacy: true }],
                         ["@babel/plugin-proposal-class-properties", { loose: true }],
-                        "react-hot-loader/babel"
+                        ["@babel/plugin-proposal-private-methods", { loose: true }],
+                        "@babel/plugin-transform-destructuring",
+                        "@babel/plugin-transform-regenerator",
+                        "@babel/plugin-transform-for-of",
+                        "@babel/plugin-syntax-dynamic-import",
+                        "@babel/plugin-transform-runtime",
+                        "@babel/plugin-proposal-optional-chaining",
+                        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
                     ]
                 }
             }
-        },
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            }]
+        }]
     },
     plugins: [new ForkTsCheckerWebpackPlugin(),
         new HtmlWebpackPlugin({
