@@ -1,4 +1,4 @@
-An empty project setup with react, typescript, webpack, babel, and three.js.  This includes default strongly-typed typescript configurations and a blank three.js canvas.
+An empty project setup with React, Typescript, Webpack, and Babel.  This includes default strongly-typed typescript ESLint configs.
 
 To run, use `npm run serve`.
 
