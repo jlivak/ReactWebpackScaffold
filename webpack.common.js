@@ -4,9 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-    // Change to your "entry-point".
     context: __dirname, // to automatically find tsconfig.json
-    entry: './src/index.tsx',
+    entry: './src/Index.tsx', // Change to your "entry-point"
     output: {
         path: path.resolve(__dirname, 'out'),
         filename: '[name].[contenthash].js'
@@ -15,40 +14,6 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
     },
     module: {
-        rules: [{
-            test: /\.(ts|js|tsx|jsx)$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    cacheDirectory: true,
-                    babelrc: false,
-                    presets: [
-                        [
-                            "@babel/preset-env",
-                            {
-                                targets: ">0.2%, not dead"
-                            } // or whatever your project requires
-                        ],
-                        "@babel/preset-typescript",
-                        "@babel/preset-react"
-                    ],
-                    plugins: [
-                        // plugin-proposal-decorators is only needed if you're using experimental decorators in TypeScript
-                        ["@babel/plugin-proposal-decorators", { legacy: true }],
-                        ["@babel/plugin-proposal-class-properties", { loose: true }],
-                        ["@babel/plugin-proposal-private-methods", { loose: true }],
-                        "@babel/plugin-transform-destructuring",
-                        "@babel/plugin-transform-regenerator",
-                        "@babel/plugin-transform-for-of",
-                        "@babel/plugin-syntax-dynamic-import",
-                        "@babel/plugin-transform-runtime",
-                        "@babel/plugin-proposal-optional-chaining",
-                        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
-                    ]
-                }
-            }
-        }]
     },
     plugins: [new ForkTsCheckerWebpackPlugin(),
         new HtmlWebpackPlugin({

@@ -1,12 +1,12 @@
-import React from 'react';
-import './App.css';
-import {hot} from "react-hot-loader/root";
-import ThreeJsContainer from "./ThreeJsContainer";
+import React, {Component} from 'react';
+import './App.scss';
 
-const App = () => (
-    <div className="App">
-      <ThreeJsContainer/>
-    </div>
-);
+export default class App extends Component<unknown, unknown> {
 
-export default hot(App);
+    public render(): React.ReactElement {
+        return (
+            <div className="App">
+            </div>
+        );
+    }
+}

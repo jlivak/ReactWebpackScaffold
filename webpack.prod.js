@@ -9,7 +9,33 @@ module.exports = merge(common, {
     mode: 'production',
     module:
         {
-            rules: [
+            rules: [{
+                test: /\.(ts|js|tsx|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                        babelrc: false,
+                        presets: [
+                            [
+                                "@babel/preset-env",
+                                {
+                                    targets: ">0.2%, not dead",
+                                    useBuiltIns: "entry",
+                                    corejs: "3.8"
+                                }
+                            ],
+                            "@babel/preset-typescript",
+                            "@babel/preset-react"
+                        ],
+                        plugins: [
+                            ["@babel/plugin-proposal-decorators", {legacy: true}],
+                            "@babel/plugin-transform-runtime",
+                        ]
+                    }
+                }
+            },
                 {
                     test: /\.css$/i,
                     use: [
@@ -38,6 +64,34 @@ module.exports = merge(common, {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        "style-loader",
+                        {
+                            loader: "css-loader",
+                            options: {
+                                url: false,
+                            }
+                        },
+                        {
+                            loader: 'string-replace-loader',
+                            options: {
+                                multiple: [{
+                                    search: /url\('/g,
+                                    replace: "url('" + publicUrl,
+                                    flags: "g"
+                                },
+                                    {
+                                        search: /url\("/g,
+                                        replace: "url(\"" + publicUrl,
+                                        flags: "g"
+                                    }]
+                            }
+                        },
+                        "sass-loader",
+                    ],
                 }
             ]
         },

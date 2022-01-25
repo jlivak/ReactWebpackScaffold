@@ -10,7 +10,7 @@ module.exports = {
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": 2020,
+        "ecmaVersion": "es2021",
         "project": "tsconfig.json",
         "sourceType": "module",
         "ecmaFeatures": {
@@ -448,7 +448,9 @@ module.exports = {
             "never"
         ],
         "use-isnan": "error",
-        "valid-typeof": "off"
+        "valid-typeof": "off",
+        "indent": ["error", 4],
+        "brace-style": ["error", "stroustrup"],
     },
     "settings": {
         "react": {

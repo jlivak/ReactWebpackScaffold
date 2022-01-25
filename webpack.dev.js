@@ -10,47 +10,105 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, 'public'),
+        static: {
+            directory: path.resolve(__dirname, 'public'),
+        },
+        port:8080,
+        host: 'localhost',
         hot: true
     },
     module:
         {
             rules: [{
-                test: /\.css$/i,
-                use: [
-                    {
-                        loader: "style-loader"
-                    },
-                    {
-                        loader: "css-loader",
-                        options: {
-                            url: false,
-                        }
-                    },
-                    {
-                        loader: 'string-replace-loader',
-                        options: {
-                            multiple: [{
-                                search: /url\('/g,
-                                replace: "url('" + publicUrl,
-                                flags: "g"
-                            },
+                test: /\.(ts|js|tsx|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                        babelrc: false,
+                        presets: [
+                            [
+                                "@babel/preset-env",
                                 {
-                                    search: /url\("/g,
-                                    replace: "url(\"" + publicUrl,
-                                    flags: "g"
-                                }]
-                        }
+                                    targets: ">0.2%, not dead",
+                                    useBuiltIns: "entry",
+                                    corejs: "3.8"
+                                }
+                            ],
+                            "@babel/preset-typescript",
+                            "@babel/preset-react"
+                        ],
+                        plugins: [
+                            ["@babel/plugin-proposal-decorators", {legacy: true}],
+                            "@babel/plugin-transform-runtime",
+                            "react-refresh/babel"
+                        ]
                     }
-                ]
-            }
+                }
+            },
+                {
+                    test: /\.css$/i,
+                    use: [
+                        {
+                            loader: "style-loader"
+                        },
+                        {
+                            loader: "css-loader",
+                            options: {
+                                url: false,
+                            }
+                        },
+                        {
+                            loader: 'string-replace-loader',
+                            options: {
+                                multiple: [{
+                                    search: /url\('/g,
+                                    replace: "url('" + publicUrl,
+                                    flags: "g"
+                                },
+                                    {
+                                        search: /url\("/g,
+                                        replace: "url(\"" + publicUrl,
+                                        flags: "g"
+                                    }]
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        "style-loader",
+                        {
+                            loader: "css-loader",
+                            options: {
+                                url: false,
+                            }
+                        },
+                        {
+                            loader: 'string-replace-loader',
+                            options: {
+                                multiple: [{
+                                    search: /url\('/g,
+                                    replace: "url('" + publicUrl,
+                                    flags: "g"
+                                },
+                                    {
+                                        search: /url\("/g,
+                                        replace: "url(\"" + publicUrl,
+                                        flags: "g"
+                                    }]
+                            }
+                        },
+                        "sass-loader",
+                    ],
+                }
             ]
         },
     plugins:
         [new InterpolateHtmlPlugin({
             PUBLIC_URL: publicUrl,
-            // You can pass any key-value pairs, this was just an example.
-            // WHATEVER: 42 will replace %WHATEVER% with 42 in index.html.
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
