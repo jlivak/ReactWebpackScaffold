@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 var path = require('path');
 
 var publicUrl = 'assets/';
@@ -112,5 +113,6 @@ module.exports = merge(common, {
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
-        })]
+        }),
+        new ReactRefreshWebpackPlugin()]
 });
